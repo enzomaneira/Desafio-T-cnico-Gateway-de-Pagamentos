@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="002-carga-inicial-paygo" author="stefano-giordano">
+        <insert tableName="lojistas">
+            <column name="id" valueComputed="UNHEX(REPLACE('4f4d2f80-7a32-4d2b-986c-123456789abc','-',''))"/>
+            <column name="cnpj" value="06.167.186/0001-54"/>
+            <column name="nome_fantasia" value="PayGo"/>
+            <column name="ativo" valueBoolean="true"/>
+            <column name="data_criacao" valueDate="NOW()"/>
+            <column name="data_atualizacao" valueDate="NOW()"/>
+        </insert>
+
+        <insert tableName="usuarios_lojista">
+            <column name="id" valueComputed="UNHEX(REPLACE('701529de-dcb6-4388-98c3-9de8b04445ce','-',''))"/>
+            <column name="lojista_id" valueComputed="UNHEX(REPLACE('4f4d2f80-7a32-4d2b-986c-123456789abc','-',''))"/>
+            <column name="idp_id" value="a91a9768-c11c-4235-8666-412255670876"/>
+            <column name="nome" value="Admin PayGo"/>
+            <column name="email" value="adm@paygo.com.br"/>
+            <column name="cargo" value="ADMINISTRADOR"/>
+            <column name="ativo" valueBoolean="true"/>
+            <column name="data_criacao" valueDate="NOW()"/>
+            <column name="data_atualizacao" valueDate="NOW()"/>
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>

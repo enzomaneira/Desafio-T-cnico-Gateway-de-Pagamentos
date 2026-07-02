@@ -1,0 +1,152 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.24.xsd">
+
+    <changeSet id="001-criar-esquema-inicial" author="stefano-giordano">
+        <createTable tableName="lojistas">
+            <column name="id" type="BINARY(16)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="cnpj" type="VARCHAR(20)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="nome_fantasia" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ativo" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_criacao" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_atualizacao" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="usuarios_lojista">
+            <column name="id" type="BINARY(16)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="lojista_id" type="BINARY(16)">
+                <constraints nullable="false" foreignKeyName="fk_usuario_lojista" references="lojistas(id)"/>
+            </column>
+            <column name="idp_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nome" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="cargo" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ativo" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ultimo_login" type="DATETIME"/>
+            <column name="data_criacao" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_atualizacao" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="dados_pagamento">
+            <column name="id" type="BINARY(16)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="numero_cartao_mascarado" type="VARCHAR(20)"/>
+            <column name="nome_titular" type="VARCHAR(255)"/>
+            <column name="codigo_barras_boleto" type="VARCHAR(255)"/>
+            <column name="pix_qr_code" type="TEXT"/>
+            <column name="pix_chave" type="VARCHAR(255)"/>
+            <column name="provedor" type="VARCHAR(255)"/>
+            <column name="data_pagamento" type="DATETIME"/>
+            <column name="data_expiracao" type="DATETIME"/>
+            <column name="e2e_id" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable tableName="transacoes">
+            <column name="id" type="BINARY(16)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="lojista_id" type="BINARY(16)">
+                <constraints nullable="false" foreignKeyName="fk_transacao_lojista" references="lojistas(id)"/>
+            </column>
+            <column name="solicitante" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dados_pagamento_id" type="BINARY(16)">
+                <constraints nullable="false" foreignKeyName="fk_transacao_dados" references="dados_pagamento(id)"/>
+            </column>
+            <column name="valor_quantia" type="DECIMAL(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valor_moeda" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="metodo_pagamento" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="id_transacao_psp" type="VARCHAR(255)"/>
+            <column name="resposta_psp_pura" type="TEXT"/>
+
+            <column name="data_criacao" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_atualizacao" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="reembolsos">
+            <column name="id" type="BINARY(16)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="transacao_id" type="BINARY(16)">
+                <constraints nullable="false" foreignKeyName="fk_reembolso_transacao" references="transacoes(id)"/>
+            </column>
+
+            <column name="valor_quantia" type="DECIMAL(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="valor_moeda" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="motivo" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_criacao" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_atualizacao" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="lojista_provedores">
+            <column name="lojista_id" type="BINARY(16)">
+                <constraints nullable="false" foreignKeyName="fk_lojprov_lojista" references="lojistas(id)"/>
+            </column>
+
+            <column name="provedor" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="lojista_provedores" columnNames="lojista_id, provedor" constraintName="pk_lojista_provedores"/>
+
+    </changeSet>
+</databaseChangeLog>

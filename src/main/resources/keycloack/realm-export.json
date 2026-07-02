@@ -1,0 +1,77 @@
+{
+  "realm": "payment-gateway",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "roles": {
+    "realm": [
+      { "name": "ADMINISTRADOR", "description": "Admin do Sistema" },
+      { "name": "GERENTE", "description": "Dono do Estabelecimento" },
+      { "name": "SUPORTE", "description": "Suporte N1" },
+      { "name": "ANALISTA", "description": "Analista de Loja" }
+    ]
+  },
+  "users": [
+    {
+      "username": "service-account-gateway-backend",
+      "enabled": true,
+      "serviceAccountClientId": "gateway-backend",
+      "clientRoles": {
+        "realm-management": ["realm-admin"]
+      }
+    },
+    {
+      "id": "a91a9768-c11c-4235-8666-412255670876",
+      "username": "adm@paygo.com.br",
+      "email": "adm@paygo.com.br",
+      "firstName": "Admin Paygo",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "123456",
+          "temporary": false
+        }
+      ],
+      "attributes": {
+        "merchant_id": [
+          "4f4d2f80-7a32-4d2b-986c-123456789abc"
+        ]
+      },
+      "realmRoles": [
+        "ADMINISTRADOR"
+      ]
+    }
+  ],
+  "clients": [
+    {
+      "clientId": "gateway-backend",
+      "enabled": true,
+      "publicClient": false,
+      "serviceAccountsEnabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "rust-in-peace",
+      "directAccessGrantsEnabled": true,
+      "standardFlowEnabled": true,
+      "redirectUris": ["*"],
+      "fullScopeAllowed": true,
+      "protocolMappers": [
+        {
+          "name": "merchant_id-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "merchant_id",
+            "claim.name": "merchant_id",
+            "jsonType.label": "String",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true"
+          }
+        }
+      ]
+    }
+  ]
+}

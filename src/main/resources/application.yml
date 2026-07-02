@@ -1,0 +1,52 @@
+spring:
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+  application:
+    name: "desafio-setis-java"
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/pagamentos?allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/payment-gateway
+          jwk-set-uri: http://localhost:8180/realms/payment-gateway/protocol/openid-connect/certs
+
+  jackson:
+    mapper:
+      accept-case-insensitive-enums: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+keycloak:
+  server-url: http://localhost:8180
+  realm: payment-gateway
+  client-id: gateway-backend
+  client-secret: rust-in-peace
+
+rotas:
+  lojistas: "/v1/lojistas"
+  auth: "/v1/auth"
+  transacao: "/v1/transacoes"
