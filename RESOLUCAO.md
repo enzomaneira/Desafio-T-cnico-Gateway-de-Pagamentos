@@ -73,6 +73,12 @@ Criei um arquivo em dto.validation chamado ChavePixValida
 
 ### 8 — `LojistaServiceTest.deveCadastrarLojistaComSucesso`
 **Causa:**  `Assertions.assertTrue(false)` com comentário `todo`. Precisamos implementar. 
+**Solução:** 
+1. Mockar existePorEmail e existsByCnpj como false: as duas condições que se TRUE retornariam IllegalArgumentException. Ambas precisam ser FALSE. 
+2. Mocka save com thenAnswer: como Lojista.builder...build() não tem id setado manualmente, o mock simplesmente devolve o mesmo objeto, o que permite inspecionar os campos depois. 
+3. Verifica os campos do lojista retornado: confirma que cnpj e nomeFantasia foram propagados corretamente do request para a entidade
+4. Verifica a chamada usuarioLojistaService. cadastrarUsuarioLojista(): essa é a regra mancionado no RF06 que diz "Criar usuario GERENTE inicial", e o codigo chama esse método como ADMINISTRADOR. Validar essa chamada garante a RF06. 
+
 
 ### 9 — `ProcessadorDePagamentosTest.deveAprovarTransacao`
 **Causa:** Em `default` do switch em `ProcessadorDePagamentos.simularProcessamentoExterno`, o status é setado como `AGUARDANDO_PAGAMENTO`, mas deveria ser `CONFIRMADA`, como descrito no RF02. 

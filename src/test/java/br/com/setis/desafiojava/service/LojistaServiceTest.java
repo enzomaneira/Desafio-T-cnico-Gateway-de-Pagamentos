@@ -39,8 +39,34 @@ public class LojistaServiceTest {
   @Test
   @DisplayName("Deve cadastrar um lojista com sucesso quando todos dados são válidos")
   void deveCadastrarLojistaComSucesso() {
-    // todo implementar este teste, atentando-se as regras definidas na spec (README)
-    Assertions.assertTrue(false);
+    var usuarioInicial = new CriarUsuarioLojistaInicial("Stefano", "tef@puc.com", "blinder123");
+    var novoLojistaRequest =
+        new CriarLojistaRequest("15.008.043/0001-90", "Empresas Inc.", usuarioInicial);
+
+    when(usuarioLojistaService.existePorEmail(usuarioInicial.email()))
+        .thenReturn(false); // simule que esse email não existe no sistema
+    when(lojistaRepository.existsByCnpj(novoLojistaRequest.cnpj()))
+        .thenReturn(false); // simule que esse cnpj não existe no sistema
+    when(lojistaRepository.save(any(Lojista.class))) // aceite qualquer objeto Lojista
+        .thenAnswer(
+            invocation ->
+                invocation.getArgument(
+                    0)); // devolve de volta o mesmo objeto que foi passado como argumento
+
+    Lojista resultado = lojistaService.cadastrarLojista(novoLojistaRequest); // execute o método
+
+    // verifica se o objeto não é nulo e contém os dados esperados
+    Assertions.assertNotNull(resultado);
+    Assertions.assertEquals("15.008.043/0001-90", resultado.getCnpj());
+    Assertions.assertEquals("Empresas Inc.", resultado.getNomeFantasia());
+
+    verify(lojistaRepository)
+        .save(
+            lojistaCaptor
+                .capture()); // checando se o método save foi realmente chamado durante a execução
+    Lojista lojistaSalvo =
+        lojistaCaptor.getValue(); // captura o objeto exato que foi passado para save()
+    Assertions.assertEquals("15.008.043/0001-90", lojistaSalvo.getCnpj());
   }
 
   @Test
