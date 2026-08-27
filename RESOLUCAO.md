@@ -65,14 +65,11 @@ org.opentest4j.AssertionFailedError: expected: <AGUARDANDO_PAGAMENTO> but was: <
 
 ## Causas raiz
 
-### 1, 2, 3, 4, 6, 7 — Testes de `TransacaoControllerTest` (6 testes)
+### 1, 2, 3, 4, 5, 6, 7 — Testes de `TransacaoControllerTest` (6 testes)
 **Causa:** Rodei os 6 testes e todos falhavam com 400. Fui ver o TransacaoController e o GlobalExceptionHandler, o erro 400 acontece por erro de validação ou IllegalArgumentException. Fui no DTO DadosPixRequest e achei: o campo chavePix tem @UUID, o que invalida 4 das 5 possibilidades de formato da chave pix - https://www.baeldung.com/java-hibernate-uuid-primary-key
 **Solução:** Pensei em apenas apagar o UUID, porém isso iria apenas enfraquecer a validação do corpo da requisição, então acho que vou fazer uma nova validação especial para os formatos de chavePix. 
 Criei um arquivo em dto.validation chamado ChavePixValida
 
-
-### 5 — `deveRetornarForbiddenSemRole`
-**Causa:** O teste 5 manda uma role inválida (ROLE_QUEBRADA) e o controller precisa bloquear esta role, por isso deveria retornar forbidden. O problema é que estamos validando o corpo da requisição antes do `@PreAuthorize`. Como o teste usa o mesmo método criarRequestValido() utilizando a chave pix de CNPJ a requisição já falha na validação for corpo e nunca le a Role. 
 
 ### 8 — `LojistaServiceTest.deveCadastrarLojistaComSucesso`
 **Causa:**  `Assertions.assertTrue(false)` com comentário `todo`. Precisamos implementar. 
