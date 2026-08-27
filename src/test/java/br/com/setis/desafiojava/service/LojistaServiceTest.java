@@ -39,7 +39,7 @@ public class LojistaServiceTest {
   @Test
   @DisplayName("Deve cadastrar um lojista com sucesso quando todos dados são válidos")
   void deveCadastrarLojistaComSucesso() {
-    //todo implementar este teste, atentando-se as regras definidas na spec (README)
+    // todo implementar este teste, atentando-se as regras definidas na spec (README)
     Assertions.assertTrue(false);
   }
 
