@@ -52,10 +52,9 @@ public class ProcessarBoleto extends ProcessadorDePagamentos
             TimeUnit.SECONDS.sleep(30);
             log.info("Simulando compensação do Boleto: {}", transacao.getId());
 
-            /*todo
-              aqui está faltando a lógica básica deste método
-              ele tem que salvar a transação e fazer a simulação da chamada de API
-            */
+            super.simularProcessamentoExterno(
+                transacao); // simula a resposta do PSP para o pagamento de boleto
+            transacaoRepository.save(transacao); // persiste no banco o status final da transação
 
             log.info(
                 "Boleto {} processado. Status Final: {}", transacao.getId(), transacao.getStatus());
