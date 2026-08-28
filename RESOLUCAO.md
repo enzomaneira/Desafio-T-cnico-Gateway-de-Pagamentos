@@ -77,11 +77,12 @@ Criei um arquivo em dto.validation chamado ChavePixValida
 1. Mockar existePorEmail e existsByCnpj como false: as duas condições que se TRUE retornariam IllegalArgumentException. Ambas precisam ser FALSE. 
 2. Mocka save com thenAnswer: como Lojista.builder...build() não tem id setado manualmente, o mock simplesmente devolve o mesmo objeto, o que permite inspecionar os campos depois. 
 3. Verifica os campos do lojista retornado: confirma que cnpj e nomeFantasia foram propagados corretamente do request para a entidade
-4. Verifica a chamada usuarioLojistaService. cadastrarUsuarioLojista(): essa é a regra mancionado no RF06 que diz "Criar usuario GERENTE inicial", e o codigo chama esse método como ADMINISTRADOR. Validar essa chamada garante a RF06. 
+
 
 
 ### 9 — `ProcessadorDePagamentosTest.deveAprovarTransacao`
 **Causa:** Em `default` do switch em `ProcessadorDePagamentos.simularProcessamentoExterno`, o status é setado como `AGUARDANDO_PAGAMENTO`, mas deveria ser `CONFIRMADA`, como descrito no RF02. 
+**Solução** na branch default do switch na classe processadorDePagamentos o status estava sendo setado para AGUARDANDO_PAGAMENTO quando na verdade deveria ser CONFIRMADA, o que contrariava a regra Outros -> Status: CONFIRMADA no RF02.
 
 ### 10 — `ProcessadorPagamentoFactoryTest.deveRetornarEstrategiaCorreta`
 **Causa:** Em `ProcessadorPagamentoFactory.get(MetodoPagamento metodo)`, a busca no mapa usa uma constante fixa com o valor `PIX` em vez do parâmetro recebido (`estrategias.get(metodo)`). Por isso qualquer método retorna sempre a estratégia de PIX.
