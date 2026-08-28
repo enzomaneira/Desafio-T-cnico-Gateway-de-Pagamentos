@@ -53,8 +53,8 @@ public class ProcessarBoleto extends ProcessadorDePagamentos
             log.info("Simulando compensação do Boleto: {}", transacao.getId());
 
             super.simularProcessamentoExterno(
-                transacao); // simula a resposta do PSP para o pagamento de boleto
-            transacaoRepository.save(transacao); // persiste no banco o status final da transação
+                transacao); // implement: simulation of PSP answer to the assync payment
+            transacaoRepository.save(transacao); // implement:make it persists in db
 
             log.info(
                 "Boleto {} processado. Status Final: {}", transacao.getId(), transacao.getStatus());

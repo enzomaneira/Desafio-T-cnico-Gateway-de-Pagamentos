@@ -41,7 +41,7 @@ public abstract class ProcessadorDePagamentos {
         throw new FalhaComunicacaoException("Fornecedor indisponível", causa, transacao);
       }
       default -> {
-        transacao.setStatus(StatusTransacao.CONFIRMADA);
+        transacao.setStatus(StatusTransacao.CONFIRMADA); // fix: wrong statuss AGUARDANDO_PAGAMENTO
         transacao.getDadosPagamento().setDataPagamento(LocalDateTime.now());
         transacao.getDadosPagamento().setE2eId(UUID.randomUUID().toString());
         transacao.setRespostaPspPura("Transação Aprovada com Sucesso");

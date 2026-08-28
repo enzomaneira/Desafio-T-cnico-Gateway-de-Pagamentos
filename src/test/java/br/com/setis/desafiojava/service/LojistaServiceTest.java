@@ -41,7 +41,7 @@ public class LojistaServiceTest {
   void deveCadastrarLojistaComSucesso() {
     var usuarioInicial = new CriarUsuarioLojistaInicial("Stefano", "tef@puc.com", "blinder123");
     var novoLojistaRequest =
-        new CriarLojistaRequest("15.008.043/0001-90", "Empresas Inc.", usuarioInicial);
+        new CriarLojistaRequest("15.008.043/0001-90", "Blinder Inc.", usuarioInicial);
 
     when(usuarioLojistaService.existePorEmail(usuarioInicial.email()))
         .thenReturn(false); // simule que esse email não existe no sistema
@@ -55,10 +55,10 @@ public class LojistaServiceTest {
 
     Lojista resultado = lojistaService.cadastrarLojista(novoLojistaRequest); // execute o método
 
-    // verifica se o objeto não é nulo e contém os dados esperados
+    // verifica se o objeto contém os dados esperados
     Assertions.assertNotNull(resultado);
     Assertions.assertEquals("15.008.043/0001-90", resultado.getCnpj());
-    Assertions.assertEquals("Empresas Inc.", resultado.getNomeFantasia());
+    Assertions.assertEquals("Blinder Inc.", resultado.getNomeFantasia());
 
     verify(lojistaRepository)
         .save(

@@ -17,7 +17,7 @@ public class ProcessadorPagamentoFactory {
   }
 
   public ProcessadorPagamentoStrategy get(MetodoPagamento metodo) {
-    ProcessadorPagamentoStrategy strategy = estrategias.get(metodo);
+    ProcessadorPagamentoStrategy strategy = estrategias.get(metodo); // fix: metodo was hardcoded
     if (strategy == null) {
       throw new IllegalArgumentException(
           "Nenhuma estratégia implementada para o método: " + metodo);

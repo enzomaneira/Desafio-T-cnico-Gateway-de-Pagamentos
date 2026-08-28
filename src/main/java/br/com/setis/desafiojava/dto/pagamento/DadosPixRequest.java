@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 public record DadosPixRequest(
     // chave pix válidas - Aleatória, CNPJ, Email, Telefone
+    // fix: wrongly validation for chavePix  UUID
     @NotBlank(message = "Chave pix do recebedor obrigatória") @ChavePixValida String chavePix,
     @NotNull(message = "Data expiração do QR code obrigatória")
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
