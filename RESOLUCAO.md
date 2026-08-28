@@ -86,6 +86,7 @@ Criei um arquivo em dto.validation chamado ChavePixValida
 
 ### 10 — `ProcessadorPagamentoFactoryTest.deveRetornarEstrategiaCorreta`
 **Causa:** Em `ProcessadorPagamentoFactory.get(MetodoPagamento metodo)`, a busca no mapa usa uma constante fixa com o valor `PIX` em vez do parâmetro recebido (`estrategias.get(metodo)`). Por isso qualquer método retorna sempre a estratégia de PIX.
+**Solução** Trocar o valor fixo PIX pelo retorno do da chamada estrategias.get(metodo)
 
 ### 11 — `ProcessadorAssincronoTest.deveIniciarProcessamentoBoleto`
 **Causa:** `ProcessarBoleto.processar()` precisa ser implementado. 

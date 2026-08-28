@@ -1,7 +1,5 @@
 package br.com.setis.desafiojava.strategy;
 
-import static br.com.setis.desafiojava.domain.entity.MetodoPagamento.PIX;
-
 import br.com.setis.desafiojava.domain.entity.MetodoPagamento;
 import java.util.EnumMap;
 import java.util.Map;
@@ -19,7 +17,7 @@ public class ProcessadorPagamentoFactory {
   }
 
   public ProcessadorPagamentoStrategy get(MetodoPagamento metodo) {
-    ProcessadorPagamentoStrategy strategy = estrategias.get(PIX);
+    ProcessadorPagamentoStrategy strategy = estrategias.get(metodo);
     if (strategy == null) {
       throw new IllegalArgumentException(
           "Nenhuma estratégia implementada para o método: " + metodo);
