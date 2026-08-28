@@ -90,3 +90,4 @@ Criei um arquivo em dto.validation chamado ChavePixValida
 
 ### 11 — `ProcessadorAssincronoTest.deveIniciarProcessamentoBoleto`
 **Causa:** `ProcessarBoleto.processar()` precisa ser implementado. 
+**Solução** Implementação método processar() em ProcessarBoleto gerando o codigo de barras via BoletoUtils e setando os status no mesmo padrão do método ProcessarPix

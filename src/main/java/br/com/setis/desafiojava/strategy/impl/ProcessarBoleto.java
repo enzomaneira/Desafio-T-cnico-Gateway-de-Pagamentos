@@ -1,11 +1,14 @@
 package br.com.setis.desafiojava.strategy.impl;
 
 import br.com.setis.desafiojava.domain.entity.MetodoPagamento;
+import br.com.setis.desafiojava.domain.entity.StatusTransacao;
 import br.com.setis.desafiojava.domain.entity.Transacao;
+import br.com.setis.desafiojava.dto.pagamento.DadosBoletoRequest;
 import br.com.setis.desafiojava.dto.pagamento.DadosPagamentoRequest;
 import br.com.setis.desafiojava.repository.TransacaoRepository;
 import br.com.setis.desafiojava.strategy.ProcessadorDePagamentos;
 import br.com.setis.desafiojava.strategy.ProcessadorPagamentoStrategy;
+import br.com.setis.desafiojava.utils.BoletoUtils;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +29,20 @@ public class ProcessarBoleto extends ProcessadorDePagamentos
 
   @Override
   public void processar(Transacao transacao, DadosPagamentoRequest request) {
-    // todo implementar usando a classe BoletoUtils como auxiliar
+    DadosBoletoRequest dadosBoleto = (DadosBoletoRequest) request;
+
+    String codigoBarras =
+        BoletoUtils.gerarCodigoBarras(
+            dadosBoleto.provedor(), transacao.getValorQuantia(), dadosBoleto.dataVencimento());
+
+    transacao.getDadosPagamento().setCodigoBarrasBoleto(codigoBarras);
+    transacao.getDadosPagamento().setDataExpiracao(dadosBoleto.dataVencimento());
+    transacao.setStatus(StatusTransacao.AGUARDANDO_PAGAMENTO);
+    transacao.setRespostaPspPura("201 - OK");
+
+    log.info("Boleto gerado para transação [{}]. Aguardando pagamento", transacao.getId());
+
+    simularPagamentoAssincrono(transacao);
   }
 
   private void simularPagamentoAssincrono(Transacao transacao) {
